@@ -1,24 +1,30 @@
-class Watcher{
-    constructor(vm){
-        // 依赖 node 节点
-        this._dep = [];
-
+import Dep from "./Dep"
+export default class Watcher {
+    constructor(vm, exp, cb) {
+        this._vm = vm;
+        this._cb = cb;
+        // 全局变量
+        Dep.target = this;
+        this.update(this.getExpValue(exp));
+        // 需要清空
+        Dep.target = null;
     }
 
-    addDep(node){
-        this._dep.push(node);
+    update(val) {
+        this._cb && this._cb.call(null,val)
     }
 
-
-    removeDep(node){
-        //删除对应的依赖
-    }
-
-    notice(val){
-        //需要通知所有的 node 节点改变值
-        this._dep.forEach(node => {
-            node.textContent = val;
+    /**
+     * 获取表达式的值
+     * 有一种情况是 aaa.bbb.ccc
+     * 所以需要切割
+     */
+    getExpValue(exp) {
+        let list = exp.split('.');
+        let data = this._vm.data;
+        list.forEach(key => {
+            data = data[key]
         });
+        return data;
     }
 }
-export default Watcher

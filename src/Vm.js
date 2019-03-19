@@ -1,34 +1,40 @@
 import Compiler from "./Compiler"
-import Watcher from "./Watcher"
-import WatcherControl from "./Sub"
+import Dep from "./Dep"
 export default class Vm{
     constructor(config){
         this._config = config;
         this._data = config.data;
         this._el = config.$el
-        // 1.给 data 内的所有属性增加 get 和 set 
-        // 先不考虑嵌套数据的问题
-        Object.keys(this._data).forEach((key)=>{
-            let val = this._data[key]
-            // 给每一个 data 注册一个 watcher 对象
-            WatcherControl.subscribe(key)
-            Object.defineProperty(this._data,key,{
+        // 给 data 内的所有属性增加 getter 和 setter 
+        this.observer(this._data)
+        // 解析 dom 
+        new Compiler(this._el,this); 
+         
+    }
+
+    observer(data){
+        if(!data || typeof data !== "object")return;
+        Object.keys(data).forEach((key)=>{
+            let val = data[key]
+            let dep = new Dep();
+            Object.defineProperty(data,key,{
                 enumerable:true,
                 configurable:false,
                 get(){
+                    if(Dep.target){
+                        dep.add(Dep.target)
+                    }
                     return val;
                 },
                 set(newVal){
-                    val = newVal;
-                    WatcherControl.notice(key,newVal)
+                    if(val !== newVal){
+                        val = newVal;
+                        dep.notice(newVal);
+                    }
                 }
             })
+            this.observer(val);
         })
-
-
-        // 2.解析 html 
-        new Compiler(this._el,this);
-         
     }
 
     get data(){

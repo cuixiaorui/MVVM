@@ -4,6 +4,15 @@ let handler = {
     },
     "show":function(node,boo){
        node.style.display = boo?"block":"none"
+    },
+    "click":function(vm,node,exp){
+        node.addEventListener("click",function(){
+            const handler = vm._methods[exp];
+            if(!handler){
+                console.error(`methods 内不存在的方法:${exp}`)
+            }
+            handler.call(vm);
+        })
     }
 }
 export default{

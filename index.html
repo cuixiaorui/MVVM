@@ -9,7 +9,10 @@
 <body>
     
     <div id="app">
-        <p c-show="isShow">显示</p>
+        数字：
+        <!-- <p c-show="isShow">{{info.age}}</p> -->
+        <p c-show="isShow">{{count}}</p>
+        <button c-on:click="onclick">按钮</button>
     </div>
 
     <script src="src/index.js"></script>

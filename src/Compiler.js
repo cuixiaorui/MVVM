@@ -1,6 +1,6 @@
-import watcher from "./Watcher" 
 import Watcher from "./Watcher";
 import Directive from "./Directive"
+const eventPrefix = "on:"
 const prefix = "c-"
 export default class Compiler{
     constructor(el,vm){
@@ -55,16 +55,24 @@ export default class Compiler{
         // 1. 获取 node 的属性
         // 2. 如果命中的话，调用对应的处理函数 
         // 命中-》 c- 开头
-        console.log(node)
         Object.keys(node.attributes).forEach((key)=>{
             const {name,value} = node.attributes[key]
-            if(name.startsWith("c-")){
+            if(name.startsWith(prefix)){
                 let exp = value
                 let directiveName = name.slice(2);
-                let directiveHandler = Directive.getHandler(directiveName);
-                new Watcher(this._vm, exp,(val)=>{
-                    directiveHandler(node,val);
-                });
+
+                if(directiveName.startsWith(eventPrefix)){
+                    // 属于事件类型
+                    let eventType = directiveName.slice(3);
+                    let directiveHandler = Directive.getHandler(eventType);
+                    directiveHandler(this._vm,node,exp)
+                }else{
+                    let directiveHandler = Directive.getHandler(directiveName);
+                    new Watcher(this._vm, exp, (val) => {
+                        directiveHandler(node, val);
+                    });
+                }
+
             }
         })
     }

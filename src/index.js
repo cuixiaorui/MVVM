@@ -8,13 +8,17 @@ var vm = new Vm({
         isShow: true,
         info:{
             name:"cxr",
-            age:1
+            age:1,
+            message: "model",
         }
     },
     methods: {
         onclick(){
             this.count += 1;
             // this.info.age += 1;
+        },
+        onSwitch(){
+            this.isShow = !this.isShow;
         }
     }
 });

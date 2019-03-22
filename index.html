@@ -5,14 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>MVVM</title>
+    <style>
+        .rect{
+            width: 50px;
+            height: 50px;
+            background: black;
+        }
+    </style>
 </head>
 <body>
     
     <div id="app">
-        数字：
-        <!-- <p c-show="isShow">{{info.age}}</p> -->
-        <p c-show="isShow">{{count}}</p>
-        <button c-on:click="onclick">按钮</button>
+        <div>
+            数字：
+            <p>{{count}}</p>
+            <button c-on:click="onclick">按钮</button>
+            <button c-on:click="onSwitch">开关</button>
+
+            <div style="height: 60px">
+                <div class="rect" c-show='isShow'></div>
+            </div>
+
+        </div>
+      
+        <div>
+            <input c-model="info.message" placeholder="edit me">
+            <p>{{info.message}}</p>
+        </div>
+       
     </div>
 
     <script src="src/index.js"></script>

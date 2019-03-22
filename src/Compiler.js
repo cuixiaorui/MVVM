@@ -69,7 +69,7 @@ export default class Compiler{
                 }else{
                     let directiveHandler = Directive.getHandler(directiveName);
                     new Watcher(this._vm, exp, (val) => {
-                        directiveHandler(node, val);
+                        directiveHandler(node, val,exp,this._vm);
                     });
                 }
 

@@ -5,7 +5,7 @@
      */
     export var getExpValue =  function(vm,exp) {
         let list = exp.split('.');
-        let data = vm.data;
+        let data = vm;
         list.forEach(key => {
             data = data[key]
         });
@@ -20,7 +20,6 @@
             if(index === list.length -1){
                 data[key] = val;
             }else{
-
                 data = data[key]
             }
 

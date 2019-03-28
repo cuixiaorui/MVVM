@@ -6,13 +6,13 @@ export default class Vm{
         this._data = config.data;
         this._el = config.$el
         this._methods = config.methods;
+        this._computed = config.computed;
         // 给 data 内的所有属性增加 getter 和 setter 
         this.observer(this._data)
+        this.initComputed();
+        this.registProxy(this._data);
         // 解析 dom 
         new Compiler(this._el,this); 
-
-
-        this.registProxy(this._data);
     }
 
     observer(data){
@@ -65,7 +65,19 @@ export default class Vm{
                 }
             })
         })
-         
+    }
 
+    initComputed(){
+        let vm = this;
+        // 把 computed 内的属性挂载到 vm 身上
+        if(typeof this._computed === "object"){
+            Object.keys(this._computed).forEach((key)=>{
+                Object.defineProperty(vm,key,{
+                    get(){
+                        return this._computed[key].bind(vm)
+                    }
+                })
+            })
+        } 
     }
 }

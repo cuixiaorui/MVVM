@@ -20,6 +20,11 @@ var vm = new Vm({
         onSwitch(){
             this.isShow = !this.isShow;
         }
+    },
+    computed: {
+        ceshi(){
+            return `计算属性:${this.count}` 
+        }
     }
 });
 window.vm = vm;

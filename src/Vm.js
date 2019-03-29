@@ -2,12 +2,11 @@ import Compiler from "./Compiler"
 import Dep from "./Dep"
 export default class Vm{
     constructor(config){
+        this._el = config.$el
         this._config = config;
         this._data = config.data;
-        this._el = config.$el
         this._methods = config.methods;
         this._computed = config.computed;
-        // 给 data 内的所有属性增加 getter 和 setter 
         this.observer(this._data)
         this.initComputed();
         this.registProxy(this._data);
@@ -15,7 +14,11 @@ export default class Vm{
         new Compiler(this._el,this); 
     }
 
-    observer(data){
+    /**
+     * 给 data 内的所有属性增加 getter 和 setter
+     * @param {} data 
+     */
+    observer(data) {
         if(!data || typeof data !== "object")return;
         Object.keys(data).forEach((key)=>{
             let val = data[key]
@@ -32,7 +35,7 @@ export default class Vm{
                 set(newVal){
                     if(val !== newVal){
                         val = newVal;
-                        dep.notice(newVal);
+                        dep.notice();
                     }
                 }
             })
@@ -45,6 +48,7 @@ export default class Vm{
     }
 
     /**
+     * 注册代理
      * this._data 的代理
      * this.xx ==> this._data.xx
      * @param {} data 
@@ -66,7 +70,9 @@ export default class Vm{
             })
         })
     }
-
+    /**
+     * 处理计算属性
+     */
     initComputed(){
         let vm = this;
         // 把 computed 内的属性挂载到 vm 身上

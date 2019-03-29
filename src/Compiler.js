@@ -1,5 +1,6 @@
 import Watcher from "./Watcher";
 import Directive from "./Directive"
+// 指令前缀
 const eventPrefix = "on:"
 const prefix = "c-"
 export default class Compiler{
@@ -51,6 +52,10 @@ export default class Compiler{
             }
         })
     }
+    /**
+     * 编译处理元素节点 
+     * @param {} node 
+     */
     compileElementNode(node){
         // 1. 获取 node 的属性
         // 2. 如果命中的话，调用对应的处理函数 

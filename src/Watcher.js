@@ -3,8 +3,8 @@ import {getExpValue} from "./util.js"
 export default class Watcher {
     constructor(vm, exp, cb) {
         this._vm = vm;
-        this._exp = exp;
         this._cb = cb;
+        this._exp = exp;
         // 全局变量
         Dep.target = this;
         this.update();

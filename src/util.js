@@ -13,6 +13,12 @@
     }
 
 
+    /**
+     * 设置表达式的值 
+     * @param {} vm 
+     * @param {*} exp 
+     * @param {*} val 
+     */
     export var setExpValue = function(vm,exp,val){
         let list = exp.split('.');
         let data = vm.data;

@@ -15,7 +15,6 @@ var vm = new Vm({
     methods: {
         onclick(){
             this.count += 1;
-            // this.info.age += 1;
         },
         onSwitch(){
             this.isShow = !this.isShow;

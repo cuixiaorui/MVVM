@@ -5,6 +5,7 @@ export default class Watcher {
         this._vm = vm;
         this._cb = cb;
         this._exp = exp;
+        this._oldVal = null;
         // 全局变量
         Dep.target = this;
         this.update();
@@ -18,6 +19,7 @@ export default class Watcher {
         {
             val = val.call(this._vm)
         }
-        this._cb && this._cb.call(null,val)
+        this._cb && this._cb.call(null,val,this._oldVal)
+        this._oldVal = val;
     }
 }

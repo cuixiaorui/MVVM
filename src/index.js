@@ -24,6 +24,11 @@ var vm = new Vm({
         ceshi(){
             return `计算属性:${this.count}` 
         }
+    },
+    watch: {
+        isShow(val,oldVal){
+            console.log(`isShow： val:${val} oldVal:${oldVal}`)
+        }
     }
 });
 window.vm = vm;

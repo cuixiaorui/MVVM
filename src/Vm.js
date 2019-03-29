@@ -1,15 +1,18 @@
 import Compiler from "./Compiler"
 import Dep from "./Dep"
+import Watcher from "./Watcher";
 export default class Vm{
     constructor(config){
         this._el = config.$el
         this._config = config;
         this._data = config.data;
+        this._watch = config.watch;
         this._methods = config.methods;
         this._computed = config.computed;
         this.observer(this._data)
         this.initComputed();
         this.registProxy(this._data);
+        this.initWatch();
         // 解析 dom 
         new Compiler(this._el,this); 
     }
@@ -85,5 +88,13 @@ export default class Vm{
                 })
             })
         } 
+    }
+    initWatch(){
+        if(typeof this._watch === "object"){
+            for(let key in this._watch){
+                const cb = this._watch[key]
+                new Watcher(this,key,cb);
+            }
+        }
     }
 }
